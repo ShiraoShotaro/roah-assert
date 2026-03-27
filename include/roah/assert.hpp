@@ -1,12 +1,12 @@
-#ifndef ROAH_SERV_ASSERTION_HPP
-#define ROAH_SERV_ASSERTION_HPP
+#ifndef ROAH_ASSERT_HPP
+#define ROAH_ASSERT_HPP
 
 #include <cstdint>
 #include <source_location>
 #include <stdexcept>
 #include <string_view>
 
-namespace roah::serv {
+namespace roah {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///
@@ -98,7 +98,7 @@ private:
     std::source_location source_location_;
 };
 
-}  // namespace roah::serv
+}  // namespace roah
 
 // --- Assertion Macros ---
 #ifdef ROAH_DEBUG
@@ -106,13 +106,13 @@ private:
 #    define ROAH_ASSERTION(expr)                                                            \
         if (!(expr)) [[unlikely]]                                                           \
         {                                                                                   \
-            ::pastel::AssertionError::printMessage(#expr, std::source_location::current()); \
+            ::roah::AssertionError::printMessage(#expr, std::source_location::current()); \
             assert(false && #expr);                                                         \
         }
 #    define ROAH_ASSERTION_C(expr)                                                          \
         if constexpr (!(expr))                                                              \
         {                                                                                   \
-            ::pastel::AssertionError::printMessage(#expr, std::source_location::current()); \
+            ::roah::AssertionError::printMessage(#expr, std::source_location::current()); \
             assert(false && #expr);                                                         \
         }
 #else
@@ -123,37 +123,37 @@ private:
 // --- Not Implemented Macro ---
 #ifdef ROAH_DEBUG
 #    define ROAH_NOT_IMPLEMENTED()                                                                  \
-        ::pastel::AssertionError::printMessage("NOT IMPLEMENTED", std::source_location::current()); \
+        ::roah::AssertionError::printMessage("NOT IMPLEMENTED", std::source_location::current()); \
         assert(false && "NOT IMPLEMENTED")
 #else
 #    define ROAH_NOT_IMPLEMENTED() \
-        ::pastel::AssertionError::printMessage("NOT IMPLEMENTED", std::source_location::current())
+        ::roah::AssertionError::printMessage("NOT IMPLEMENTED", std::source_location::current())
 #endif
 
 // --- Coding Error Macros ---
 #define ROAH_CODING_ERROR(expr)                                                      \
     if (!(expr)) [[unlikely]]                                                        \
     {                                                                                \
-        ::pastel::CodingError::printMessage(#expr, std::source_location::current()); \
-        throw ::pastel::CodingError{ #expr, std::source_location::current() };       \
+        ::roah::CodingError::printMessage(#expr, std::source_location::current()); \
+        throw ::roah::CodingError{ #expr, std::source_location::current() };       \
     }
 #define ROAH_CODING_ERROR_C(expr)                                                    \
     if constexpr (!(expr))                                                           \
     {                                                                                \
-        ::pastel::CodingError::printMessage(#expr, std::source_location::current()); \
-        throw ::pastel::CodingError{ #expr, std::source_location::current() };       \
+        ::roah::CodingError::printMessage(#expr, std::source_location::current()); \
+        throw ::roah::CodingError{ #expr, std::source_location::current() };       \
     }
 #define ROAH_CODING_ERROR_M(expr, msg)                                                    \
     if (!(expr)) [[unlikely]]                                                             \
     {                                                                                     \
-        ::pastel::CodingError::printMessage(#expr, std::source_location::current(), msg); \
-        throw ::pastel::CodingError{ #expr, std::source_location::current() };            \
+        ::roah::CodingError::printMessage(#expr, std::source_location::current(), msg); \
+        throw ::roah::CodingError{ #expr, std::source_location::current() };            \
     }
 #define ROAH_CODING_ERROR_M_C(expr, msg)                                                  \
     if constexpr (!(expr))                                                                \
     {                                                                                     \
-        ::pastel::CodingError::printMessage(#expr, std::source_location::current(), msg); \
-        throw ::pastel::CodingError{ #expr, std::source_location::current() };            \
+        ::roah::CodingError::printMessage(#expr, std::source_location::current(), msg); \
+        throw ::roah::CodingError{ #expr, std::source_location::current() };            \
     }
 
 #endif
